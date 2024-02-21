@@ -31,3 +31,4 @@
 /home/dominichiland/Documents/GitHub/study_together_api/obj/Debug/net8.0/study_together_api.pdb
 /home/dominichiland/Documents/GitHub/study_together_api/obj/Debug/net8.0/study_together_api.genruntimeconfig.cache
 /home/dominichiland/Documents/GitHub/study_together_api/obj/Debug/net8.0/ref/study_together_api.dll
+/home/dominichiland/Documents/GitHub/study_together_api/obj/Debug/net8.0/study_together_api.sourcelink.json
