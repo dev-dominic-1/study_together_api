@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using study_together_api.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 var CorsOrigins = "_CorsOrigins";
 
@@ -14,6 +17,11 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("http://localhost:8080");
     });
+});
+
+builder.Services.AddDbContext<DataContext>(options => 
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 var app = builder.Build();
