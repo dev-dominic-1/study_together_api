@@ -12,11 +12,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: CorsOrigins,
-    policy =>
-    {
-        policy.WithOrigins("http://localhost:8080");
-    });
+    options.AddPolicy(name: CorsOrigins, policy => policy.WithOrigins("http://localhost:8080"));
 });
 
 builder.Services.AddDbContext<DataContext>(options => 
