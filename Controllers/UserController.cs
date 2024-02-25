@@ -66,7 +66,10 @@ namespace study_together_api.Controllers
             }
             // Add new user to DB context and save
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            try
+            { await _context.SaveChangesAsync(); }
+            catch (Exception e)
+            { return StatusCode(500, e); }
             return Ok(user);
         }
     }
