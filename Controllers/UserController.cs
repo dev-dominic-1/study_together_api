@@ -21,8 +21,21 @@ namespace study_together_api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetAllUsers()
         {
-            var result = await _context.Users.Include(u => u.Posts).ToListAsync();
+            var result = await _context.Users.ToListAsync();
             return Ok(result); // respond 200
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetById(int Id)
+        {
+            var result = await _context.Users
+                .Include(u => u.Posts)
+                .Where(u => u.Id == Id)
+                .SingleOrDefaultAsync();
+            if (result == null) {
+                return NotFound();
+            }
+            return Ok(result);
         }
     }
 }
