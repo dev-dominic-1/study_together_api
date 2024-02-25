@@ -19,8 +19,7 @@ namespace study_together_api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Post>>> GetAllPosts()
         {
-            var result = await _context.Posts.ToListAsync();
-            return Ok(result);
+            return Ok(await _context.Posts.ToListAsync());
         }
     }
 }
