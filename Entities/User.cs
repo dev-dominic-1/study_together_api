@@ -1,6 +1,7 @@
 namespace study_together_api.Entities
 {
     public class User {
+
         public int Id { get; set; }
 
         public required string Name { get; set; }
@@ -11,6 +12,6 @@ namespace study_together_api.Entities
 
         public string Email { get; set; } = string.Empty;
 
-        public virtual ICollection<Post>? Posts { get; set; }
+        public virtual ICollection<Post> Posts { get; set; } = [];
     }
 }

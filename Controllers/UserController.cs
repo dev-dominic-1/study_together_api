@@ -21,7 +21,7 @@ namespace study_together_api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetAllUsers()
         {
-            var result = await _context.Users.ToListAsync();
+            var result = await _context.Users.Include(u => u.Posts).ToListAsync();
             return Ok(result); // respond 200
         }
     }

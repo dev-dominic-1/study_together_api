@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace study_together_api.Entities
 {
     public class Post 
@@ -11,7 +13,5 @@ namespace study_together_api.Entities
         public int Likes { get; set; } = 0;
 
         public int? UserId { get; set; }
-
-        public virtual User? User { get; set; }
     }
 }
