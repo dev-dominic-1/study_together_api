@@ -4,3 +4,5 @@ obj
 .fake
 scripts
 *.cache
+appsettings.json
+appsettings.Development.json
