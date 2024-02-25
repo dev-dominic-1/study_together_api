@@ -19,7 +19,10 @@ namespace study_together_api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Post>>> GetAllPosts()
         {
-            return Ok(await _context.Posts.ToListAsync());
+            try
+            { return Ok(await _context.Posts.ToListAsync()); }
+            catch (Exception e)
+            { return StatusCode(500, e); }
         }
     }
 }
