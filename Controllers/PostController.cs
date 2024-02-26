@@ -7,22 +7,14 @@ namespace study_together_api.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class PostController : DbControllerBase<PostController>
     {
-        private readonly DataContext _context;
-
-        public PostController(DataContext context)
-        {
-            _context = context;
-        }
+        public PostController(DataContext context) : base(context) {}
 
         [HttpGet]
-        public async Task<ActionResult<List<Post>>> GetAllPosts()
+        public async Task<ActionResult<List<Post>>> GetPosts()
         {
-            try
-            { return Ok(await _context.Posts.ToListAsync()); }
-            catch (Exception e)
-            { return StatusCode(500, e); }
+            return Ok(await _context.Posts.ToListAsync());
         }
     }
 }

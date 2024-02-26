@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using study_together_api.Data;
 using Microsoft.Extensions.DependencyInjection;
+using study_together_api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 var CorsOrigins = "_CorsOrigins";
@@ -9,7 +10,10 @@ var CorsOrigins = "_CorsOrigins";
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddControllers();
+builder.Services.AddControllers(config => 
+{
+    config.Filters.Add(typeof(ExceptionHandler));
+});
 builder.Services.AddAuthorization();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
