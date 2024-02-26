@@ -10,21 +10,16 @@ using Newtonsoft.Json;
 using Microsoft.OpenApi.Any;
 using System.Globalization;
 using study_together_api.Utilities;
+using JsonConverter = System.Text.Json.Serialization.JsonConverter;
 
 /// WARNING: Fat controller. Should be revised to use a Service
 namespace study_together_api.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : DbControllerBase<UserController>    
     {
-
-        private readonly DataContext _context;
-
-        public UserController(DataContext context)
-        {
-            _context = context;
-        }
+        public UserController(DataContext context) : base(context) {}
 
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetAllUsers()
@@ -34,11 +29,11 @@ namespace study_together_api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetById(int Id)
+        public async Task<ActionResult<User>> GetById(int id)
         {
             var result = await _context.Users
                 .Include(u => u.Posts)
-                .Where(u => u.Id == Id)
+                .Where(u => u.Id == id)
                 .SingleOrDefaultAsync();
             if (result is null)
                 return NotFound();
@@ -52,24 +47,15 @@ namespace study_together_api.Controllers
         /// <param name="props">Map of properties to set on new user</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<object>> AddUser(string FirstName, string LastName, Dictionary<string, string> props)
+        public async Task<ActionResult<object>> AddUser(string firstName, string lastName, Dictionary<string, dynamic>? props)
         {
-            // Start with the required property, `Name`
-            var user = new User { FirstName = FirstName, LastName = LastName };
+            // Start with the required properties, `FirstName` + `LastName`
+            var user = new User { FirstName = firstName, LastName = lastName };
             // Instantiate a Utility instance of `User` to set properties using Reflection
-            var userUtil = typeof(User);
-            // Loop through `props` passed on payload and set values on `user`
-            foreach (KeyValuePair<string, string> entry in props.ToList()) 
-            {
-                string key = StringUtils.ToTitleCase(entry.Key);
-                userUtil.GetProperty(key)?.SetValue(user, entry.Value);
-            }
+            FillPropertyValues(user, props);
             // Add new user to DB context and save
             _context.Users.Add(user);
-            try
-            { await _context.SaveChangesAsync(); }
-            catch (Exception e)
-            { return StatusCode(500, e); }
+            await _context.SaveChangesAsync();
             return Ok(user);
         }
     }

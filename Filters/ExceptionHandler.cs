@@ -15,13 +15,10 @@ public class ExceptionHandler : IExceptionFilter
         _logger = logger;
     }
 
-    public async void OnException(ExceptionContext context)
+    public void OnException(ExceptionContext context)
     {
-        var dbContext = context.HttpContext.RequestServices.GetService<DataContext>();
-        dbContext?.Exceptions.Add(DataContextException.From(context.Exception));
-        var promise = dbContext?.SaveChangesAsync();
         _logger.LogError(context.Exception.Message);
-        if (promise is not null) await promise;
+        _logger.LogError(context.Exception.StackTrace);
         context.Result = new StatusCodeResult(500);
     }
 }
