@@ -15,6 +15,12 @@ public class DbControllerBase<T> : ControllerBase where T : DbControllerBase<T>
         _context = context;
     }
 
+    /// <summary>
+        /// Example of using <b>Reflection</b> to map the values of a Dictionary (`props`)
+        /// to an entity of type `U` as `obj` for saving.
+        /// </summary>
+        /// <param name="props">Map of properties to set on `obj`</param>
+        /// <returns></returns>
     protected void FillPropertyValues<U> (U obj, Dictionary<string, dynamic>? props)
     {
         // Instantiate a Utility instance of `U` to set properties using Reflection
