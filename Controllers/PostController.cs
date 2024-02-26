@@ -7,14 +7,9 @@ namespace study_together_api.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class PostController : DbControllerBase<PostController>
     {
-        private readonly DataContext _context;
-
-        public PostController(DataContext context)
-        {
-            _context = context;
-        }
+        public PostController(DataContext context) : base(context) {}
 
         [HttpGet]
         public async Task<ActionResult<List<Post>>> GetAllPosts()
