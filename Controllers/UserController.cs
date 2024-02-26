@@ -50,7 +50,6 @@ namespace study_together_api.Controllers
         {
             // Start with the required properties, `FirstName` + `LastName`
             var user = new User { FirstName = firstName, LastName = lastName };
-            // Instantiate a Utility instance of `User` to set properties using Reflection
             FillPropertyValues(user, props);
             // Add new user to DB context and save
             _context.Users.Add(user);
