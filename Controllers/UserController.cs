@@ -40,12 +40,6 @@ namespace study_together_api.Controllers
             return Ok(result);
         }
 
-        /// <summary>
-        /// Example of using <b>Reflection</b> to map the values of a Dictionary (`props`)
-        /// to a new User entity for saving.
-        /// </summary>
-        /// <param name="props">Map of properties to set on new user</param>
-        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<object>> AddUser(string firstName, string lastName, Dictionary<string, dynamic>? props)
         {
@@ -57,6 +51,17 @@ namespace study_together_api.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return Ok(user);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> EditUser(int id, Dictionary<string, dynamic> props)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user is null)
+                return NotFound("User record could not be located");
+            FillPropertyValues(user, props);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }
