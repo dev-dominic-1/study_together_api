@@ -40,6 +40,11 @@ namespace study_together_api.Controllers
             return Ok(result);
         }
 
+        private async Task<User?> PullUser(int id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
         [HttpPost]
         public async Task<ActionResult<object>> AddUser(string firstName, string lastName, Dictionary<string, dynamic>? props)
         {
@@ -56,10 +61,21 @@ namespace study_together_api.Controllers
         [HttpPut]
         public async Task<IActionResult> EditUser(int id, Dictionary<string, dynamic> props)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await PullUser(id);
             if (user is null)
                 return NotFound("User record could not be located");
             FillPropertyValues(user, props);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> RemoveUser(int id)
+        {
+            var user = await PullUser(id);
+            if (user is null)
+                return NotFound("User record could not be located");
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return Ok();
         }
