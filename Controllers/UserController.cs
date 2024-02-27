@@ -28,21 +28,27 @@ namespace study_together_api.Controllers
             return Ok(result); // respond 200
         }
 
+        private async Task<User?> PullUser(int id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetById(int id)
         {
-            var result = await _context.Users
-                .Include(u => u.Posts)
-                .Where(u => u.Id == id)
-                .SingleOrDefaultAsync();
+            var result = await PullUser(id);
             if (result is null)
                 return NotFound();
             return Ok(result);
         }
 
-        private async Task<User?> PullUser(int id)
+        [HttpGet("include-posts/{id}")]
+        public async Task<ActionResult<User>> GetByIdIncludePosts(int id)
         {
-            return await _context.Users.FindAsync(id);
+            var user = await _context.Users.Where(u => u.Id == id).Include(u => u.Posts).SingleOrDefaultAsync();
+            if (user is null)
+                return NotFound("User record could not be located");
+            return Ok(user);
         }
 
         [HttpPost]
