@@ -12,4 +12,6 @@ public class Friend
     public int FriendUserId { get; init; }
 
     public DateTime createDate { get; init; } = DateTime.Now;
+
+    public User? User { get; set; }
 }

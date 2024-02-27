@@ -12,6 +12,9 @@ namespace study_together_api.Entities
 
         public int Likes { get; set; } = 0;
 
-        public int? UserId { get; set; }
+        public int UserId { get; init; }
+
+        [ForeignKey("UserId")]
+        public User? User { get; set; }
     }
 }
