@@ -33,8 +33,8 @@ namespace study_together_api.Entities
         [MaxLength(256)]
         public string Bio { get; set; } = string.Empty;
 
-        public ICollection<Friend>? Friends { get; set; }
+        public ICollection<Friend> Friends { get; set; } = [];
 
-        public ICollection<Post>? Posts { get; set; }
+        public ICollection<Post> Posts { get; set; } = [];
     }
 }

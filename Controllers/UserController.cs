@@ -47,7 +47,7 @@ namespace study_together_api.Controllers
         {
             var query = _context.Users.Where(u => u.Id == id);
             if (includePosts) query = query.Include(u => u.Posts);
-            if (includeFriends) query = query.Include(u => u.Friends);
+            if (includeFriends) query = query.Include(u => u.Friends).ThenInclude(f => f.FriendUser);
             User? user = await query.SingleOrDefaultAsync();
             if (user is null)
                 return NotFound("User record could not be located");
