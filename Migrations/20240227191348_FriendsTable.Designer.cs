@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using study_together_api.Data;
 
@@ -11,9 +12,11 @@ using study_together_api.Data;
 namespace study_together_api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240227191348_FriendsTable")]
+    partial class FriendsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,7 @@ namespace study_together_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exceptions", (string)null);
+                    b.ToTable("Exceptions");
                 });
 
             modelBuilder.Entity("study_together_api.Entities.Friend", b =>
@@ -57,9 +60,7 @@ namespace study_together_api.Migrations
 
                     b.HasKey("UserId", "FriendUserId");
 
-                    b.HasIndex("FriendUserId");
-
-                    b.ToTable("Friends", (string)null);
+                    b.ToTable("Friends");
                 });
 
             modelBuilder.Entity("study_together_api.Entities.Post", b =>
@@ -80,14 +81,14 @@ namespace study_together_api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("study_together_api.Entities.User", b =>
@@ -130,37 +131,23 @@ namespace study_together_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("study_together_api.Entities.Friend", b =>
                 {
-                    b.HasOne("study_together_api.Entities.User", "FriendUser")
-                        .WithMany()
-                        .HasForeignKey("FriendUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("study_together_api.Entities.User", "User")
+                    b.HasOne("study_together_api.Entities.User", null)
                         .WithMany("Friends")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("FriendUser");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("study_together_api.Entities.Post", b =>
                 {
-                    b.HasOne("study_together_api.Entities.User", "User")
+                    b.HasOne("study_together_api.Entities.User", null)
                         .WithMany("Posts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("study_together_api.Entities.User", b =>

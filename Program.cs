@@ -13,6 +13,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers(config => 
 {
     config.Filters.Add(typeof(ExceptionHandler));
+}).AddJsonOptions(options => 
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 builder.Services.AddAuthorization();
 builder.Services.AddSwaggerGen();

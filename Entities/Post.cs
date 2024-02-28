@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace study_together_api.Entities
 {
@@ -12,6 +13,9 @@ namespace study_together_api.Entities
 
         public int Likes { get; set; } = 0;
 
-        public int? UserId { get; set; }
+        public required int UserId { get; init; }
+
+        [ForeignKey("UserId")]
+        public User? User { get; set; }
     }
 }

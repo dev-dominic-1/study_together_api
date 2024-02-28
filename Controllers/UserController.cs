@@ -42,10 +42,13 @@ namespace study_together_api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("include-posts/{id}")]
-        public async Task<ActionResult<User>> GetByIdIncludePosts(int id)
+        [HttpGet("{id}/include")]
+        public async Task<ActionResult<User>> GetByIdIncludePosts(int id, [FromQuery]bool includePosts = false, [FromQuery]bool includeFriends = false)
         {
-            var user = await _context.Users.Where(u => u.Id == id).Include(u => u.Posts).SingleOrDefaultAsync();
+            var query = _context.Users.Where(u => u.Id == id);
+            if (includePosts) query = query.Include(u => u.Posts);
+            if (includeFriends) query = query.Include(u => u.Friends).ThenInclude(f => f.FriendUser);
+            User? user = await query.SingleOrDefaultAsync();
             if (user is null)
                 return NotFound("User record could not be located");
             return Ok(user);
