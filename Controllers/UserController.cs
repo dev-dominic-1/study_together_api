@@ -38,7 +38,16 @@ namespace study_together_api.Controllers
         {
             var result = await PullUser(id);
             if (result is null)
-                return NotFound();
+                return NotFound("User record could not be located with id: " + id);
+            return Ok(result);
+        }
+
+        [HttpGet("findByEmail")]
+        public async Task<ActionResult> FindByEmail([FromQuery]string email)
+        {
+            var result = await _context.Users.Where(u => u.Email == email).SingleOrDefaultAsync();
+            if (result is null)
+                return NotFound("User record could not be located with email: " + email);
             return Ok(result);
         }
 
